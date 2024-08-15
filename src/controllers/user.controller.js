@@ -26,7 +26,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // Step 3
-  const userExists = User.findOne({
+  const userExists = await User.findOne({
     $or: [{ username }, { email }],
   });
   if (userExists) {
@@ -34,9 +34,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // Step 4
-  console.log("req.files", req.files);
-  const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  // console.log("req.files", req.files);
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+  const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar image is required");
@@ -50,6 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // Step 6
+  // Here the key values should match the values defined in User model
   const user = await User.create({
     fullname,
     username: username.toLowerCase(),
