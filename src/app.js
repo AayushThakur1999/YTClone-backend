@@ -10,8 +10,10 @@ app.use(
     credentials: true,
   })
 );
-
+// Parses incoming JSON payloads in request bodies(req.body)
 app.use(express.json({ limit: "16kb" }));
+
+// Parses incoming URL-encoded payloads in request bodies(req.body)
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
