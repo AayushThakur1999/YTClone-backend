@@ -25,4 +25,26 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-export { uploadOnCloudinary };
+const extractPublicIdFromUrl = (url) => {
+  // Use regex to remove the base URL, version, and extension
+  const regex = /\/v\d+\/(.+)\.\w+$/;
+  const match = url.match(regex);
+
+  if (match && match[1]) {
+    return match[1]; // This is the public ID
+  } else {
+    console.error("Public ID not found in the URL");
+    return null;
+  }
+};
+
+const deleteImagefromCloudinary = async (url) => {
+  try {
+    const publicId = extractPublicIdFromUrl(url);
+    await cloudinary.uploader.destroy(publicId);
+  } catch (error) {
+    console.log("Error deleting image:", error);
+  }
+};
+
+export { uploadOnCloudinary, deleteImagefromCloudinary };
